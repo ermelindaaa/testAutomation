@@ -29,7 +29,7 @@ node {
         ]]) {
             stage("create s3 bucket"){
                 sh 'aws configure set region eu-central-1'
-                sh 'aws s3 mb s3://k8s'
+                sh 'aws s3 mb s3://k8s_taleas'
             }
             stage("generate ssh-keygen"){
                 sh 'sudo ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa -y'
@@ -37,12 +37,12 @@ node {
             stage("create cluster configurations"){
                 sh 'sudo chmod -R 777 /root/'
                 sh 'sudo chmod -R 777 /root/.ssh/'
-                sh 'kops create cluster k8s --zones eu-central-1b --node-size t2.micro --master-size t2.micro --node-count 2 --master-zones eu-central-1b --ssh-public-key /root/.ssh/id_rsa.pub --state s3://k8s --dns-zone taleas.io --yes'
+                sh 'kops create cluster k8s_taleas --zones eu-central-1b --node-size t2.micro --master-size t2.micro --node-count 2 --master-zones eu-central-1b --ssh-public-key /root/.ssh/id_rsa.pub --state s3://k8s_taleas --dns-zone taleas.io --yes'
                 sh 'sudo chmod -R 700 /root/.ssh/'
                 sh 'sudo chmod -R 700 /root/'
             }
             stage("create the cluser"){
-                sh 'kops update cluster k8s --state s3://k8s --yes'
+                sh 'kops update cluster k8s_taleas --state s3://k8s_taleas --yes'
             }
         }
     }
