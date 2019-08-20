@@ -3,7 +3,7 @@ remote.name = "ubuntu"
 remote.host = ""
 remote.allowAnyHosts = true
 node {
-   withCredentials([sshUserPrivateKey(credentialsId: '29f9ddc4-1165-4491-9e48-afd03adfad66', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
+   withCredentials([sshUserPrivateKey(credentialsId: '01eb9d49-682c-4e68-94a6-ec77889de9aa', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
       remote.user = userName
       remote.identityFile = identity
       stage("install awscli") {
