@@ -32,7 +32,7 @@ node {
                 sh 'aws s3 mb s3://k8s.taleas.in'
             }
             stage("generate ssh-keygen"){
-                sh 'sudo ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa'
+                sh 'sudo ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa -y'
             }
             stage("create cluster configurations"){
                 sh 'sudo chmod -R 777 /root/'
