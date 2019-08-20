@@ -24,7 +24,7 @@ node {
         [[
             $class: 'AmazonWebServicesCredentialsBinding',
             accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-            credentialsId: '29f9ddc4-1165-4491-9e48-afd03adfad66',  // ID of credentials in kubernetes
+            credentialsId: '39c07877-ebc4-4f70-a4ca-084feda446e1',  // ID of credentials in kubernetes
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         ]]) {
             stage("create s3 bucket"){
