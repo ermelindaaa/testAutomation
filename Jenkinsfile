@@ -62,6 +62,16 @@ node {
             stage("create the cluster"){
                 sh 'kops update cluster k8s.tea.in --state s3://k8s.taleas.in --yes'
             }
+            stage("create the pod"){
+                sh 'kubectl run my-app --image=tea2000/repository:firsttry --port=8080'
+            }
+            stage("expose the pod and run the container"){
+                sh 'kubectl expose deployment my-app --type=LoadBalancer --port=8080 --target-port=8080'
+            }
+            stage("activate the autoscaling"){
+                sh 'kubectl autoscale deployment test cpu-percent=70 --min=2 --max=5'
+            }
+             
         }
     }
 }
