@@ -63,7 +63,7 @@ node {
             stage("create cluster configurations"){
                sh 'sudo chmod -R 777 /root/'
                 sh 'sudo chmod -R 777 /root/.ssh/'
-                sh 'kops create cluster k8s.tea.in --node-count 2 --zones eu-central-1b --node-size t2.micro --master-size t2.micro --master-volume-size 8 --node-volume-size 8 --master-zones eu-central-1b --ssh-public-key /root/.ssh/id_rsa.pub --state s3://k8s.taleas.in --dns-zone Z1EDG0NQOJK25F --yes'
+                sh 'kops create cluster k8s.tea.in --node-count 2 --zones eu-central-1b --node-size t2.micro --master-size t2.micro --master-volume-size 8 --node-volume-size 8 --master-zones eu-central-1b --ssh-public-key /root/.ssh/id_rsa.pub --state s3://k8s.taleas.in --dns-zone Z1NYSZ17QD2UGG --yes'
                 sh 'sudo chmod -R 700 /root/.ssh/'
                 sh 'sudo chmod -R 700 /root/'
             }
