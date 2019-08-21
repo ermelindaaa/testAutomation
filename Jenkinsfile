@@ -71,15 +71,15 @@ node {
                 sh 'kops update cluster k8s.tea.in --state s3://k8s.taleas.in --yes'
             }
           stage('Check Availability') {
-                waitUntil{
-                    try{        
-                        sh "kubectl -version"
-                        return false
-                    }catch (Exception e){
-                        return true
-                    }
-                }
-            }
+               waitUntil{
+                   try{
+                       sh "kubectl cluster-info"
+                       return false
+                   }catch (Exception e){
+                       return true
+                   }
+               }
+           }
            // stage ("Waiting until initialized"){
              //timeout(30) {
                // waitUntil {
