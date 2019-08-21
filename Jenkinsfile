@@ -37,12 +37,12 @@ node {
             stage("create cluster configurations"){
                 sh 'sudo chmod -R 777 /root/'
                 sh 'sudo chmod -R 777 /root/.ssh/'
-                sh 'kops create cluster k8s --zones eu-central-1b --node-size t2.micro --master-size t2.micro --node-count 2 --master-zones eu-central-1b --ssh-public-key /root/.ssh/id_rsa.pub --state s3://k8s.taleas.in --dns-zone taleas.io --yes'
+                sh 'kops create cluster k8s.ermelinda.in --zones eu-central-1b --node-size t2.micro --master-size t2.micro --node-count 2 --master-zones eu-central-1b --ssh-public-key /root/.ssh/id_rsa.pub --state s3://k8s.taleas.in --dns-zone taleas.io --yes'
                 sh 'sudo chmod -R 700 /root/.ssh/'
                 sh 'sudo chmod -R 700 /root/'
             }
             stage("create the cluser"){
-                sh 'kops update cluster k8s --state s3://k8s.taleas.in --yes'
+                sh 'kops update cluster k8s.ermelinda.in--state s3://k8s.taleas.in --yes'
             }
         }
     }
