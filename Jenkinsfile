@@ -16,6 +16,14 @@ node {
         stage("get the EC2 external ip"){
             remote.host = sh (script: "aws ec2 describe-instances --query \'Reservations[0].Instances[0].PublicIpAddress\' --instance-ids $ID",returnStdout: true)
         }
+      stage ("Waiting until initialized"){
+             timeout(30) {
+                waitUntil {
+                  def response = sh(script: "aws ec2 describe-instances --query \'Reservations[0].Instances[0].State.Code\' --instance-ids $ID",returnStatus: true)
+                  return (response == 0)
+                }
+              }
+            }
     }
    withCredentials([sshUserPrivateKey(credentialsId: '01eb9d49-682c-4e68-94a6-ec77889de9aa', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
       remote.user = userName
@@ -62,6 +70,16 @@ node {
             stage("create the cluster"){
                 sh 'kops update cluster k8s.tea.in --state s3://k8s.taleas.in --yes'
             }
+          stage('Check Availability') {
+                waitUntil{
+                    try{        
+                        sh "kubectl -version"
+                        return false
+                    }catch (Exception e){
+                        return true
+                    }
+                }
+            }
            // stage ("Waiting until initialized"){
              //timeout(30) {
                // waitUntil {
@@ -70,18 +88,18 @@ node {
                 //}
               //}
             //}
-          stage("Verify demo success") {
-              timeout(30) {
-                waitUntil {
-                  def response = sh(
-                    script: "aws ec2 describe-instances --query \'Reservations[0].Instances[0].State.Code\' --instance-ids $ID",
-                    returnStatus: true
-                  )
-                  return (response == 16)
-                }
-              }
-              sh "echo Created"
-            }
+         // stage("Verify demo success") {
+           //   timeout(30) {
+             //   waitUntil {
+               //   def response = sh(
+                 //   script: "aws ec2 describe-instances --query \'Reservations[0].Instances[0].State.Code\' --instance-ids $ID",
+                   // returnStatus: true
+                  //)
+                  //return (response == 16)
+                //}
+              //}
+              //sh "echo Created"
+            //}
            // stage("create the pod"){
              //   sh 'kubectl run my-app --image=grisildarr/repository:firsttry --port=8080'
             //}
