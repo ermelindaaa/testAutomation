@@ -3,6 +3,20 @@ remote.name = "ubuntu"
 remote.host = ""
 remote.allowAnyHosts = true
 node {
+   withCredentials(
+        [[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+            credentialsId: '39c07877-ebc4-4f70-a4ca-084feda446e1',  // ID of credentials in kubernetes
+            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        ]]) {
+       stage("create EC2 instance"){
+            ID = sh (script: 'aws ec2 run-instances --image-id ami-0085d4f8878cddc81 --count 1 --instance-type t2.micro --key-name KEY_AWS --security-group-ids sg-88d34feb --subnet-id subnet-166e626b --region eu-central-1 --query \'Instances[0].InstanceId\'',returnStdout: true)
+        }
+        stage("get the EC2 external ip"){
+            remote.host = sh (script: "aws ec2 describe-instances --query \'Reservations[0].Instances[0].PublicIpAddress\' --instance-ids $ID",returnStdout: true)
+        }
+    }
    withCredentials([sshUserPrivateKey(credentialsId: '01eb9d49-682c-4e68-94a6-ec77889de9aa', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
       remote.user = userName
       remote.identityFile = identity
@@ -31,7 +45,11 @@ node {
                 sh 'aws configure set region eu-central-1'
                 sh 'aws s3 mb s3://k8s.taleas.in'
             }
+           stage("Expose environment variable"){
+                sh 'export KOPS_STATE_STORE=s3://k8s.taleas.in'
+           }
             stage("generate ssh-keygen"){
+                sh 'sudo chmod -R 700 /root/.ssh/id_rsa'
                 sh 'sudo ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa -y'
             }
             stage("create cluster configurations"){
