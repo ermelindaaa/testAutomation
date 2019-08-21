@@ -63,7 +63,7 @@ node {
                 sh 'kops update cluster k8s.tea.in --state s3://k8s.taleas.in --yes'
             }
             stage("create the pod"){
-                sh 'kubectl run my-app --image=teaaa2000/repository:firsttry --port=8080'
+                sh 'kubectl run my-app --image=grisildarr/repository:firsttry --port=8080'
             }
             stage("expose the pod and run the container"){
                 sh 'kubectl expose deployment my-app --type=LoadBalancer --port=8080 --target-port=8080'
