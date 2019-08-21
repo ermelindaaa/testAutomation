@@ -11,7 +11,7 @@ node {
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         ]]) {
        stage("create EC2 instance"){
-            ID = sh (script: 'aws ec2 run-instances --image-id ami-0085d4f8878cddc81 --count 1 --instance-type t2.micro --key-name Taleas456 -security-group-ids sg-88d34feb --subnet-id subnet-166e626b --region eu-central-1 --query \'Instances[0].InstanceId\'',returnStdout: true)
+            ID = sh (script: 'aws ec2 run-instances --image-id ami-0085d4f8878cddc81 --count 1 --instance-type t2.micro --key-name Taleas456 --security-group-ids sg-88d34feb --subnet-id subnet-166e626b --region eu-central-1 --query \'Instances[0].InstanceId\'',returnStdout: true)
         }
         stage("get the EC2 external ip"){
             remote.host = sh (script: "aws ec2 describe-instances --query \'Reservations[0].Instances[0].PublicIpAddress\' --instance-ids $ID",returnStdout: true)
