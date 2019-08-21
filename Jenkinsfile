@@ -55,30 +55,42 @@ node {
             stage("create cluster configurations"){
                sh 'sudo chmod -R 777 /root/'
                 sh 'sudo chmod -R 777 /root/.ssh/'
-                sh 'kops create cluster k8s.tea.in --zones eu-central-1b --node-size t2.micro --master-size t2.micro --node-count 2 --master-zones eu-central-1b --ssh-public-key /root/.ssh/id_rsa.pub --state s3://k8s.taleas.in --dns-zone Z1EDG0NQOJK25F --yes'
+                sh 'kops create cluster k8s.tea.in --node-count 2 --zones eu-central-1b --node-size t2.micro --master-size t2.micro --master-volume-size 8 --node-volume-size 8 --master-zones eu-central-1b --ssh-public-key /root/.ssh/id_rsa.pub --state s3://k8s.taleas.in --dns-zone Z1EDG0NQOJK25F --yes'
                 sh 'sudo chmod -R 700 /root/.ssh/'
                 sh 'sudo chmod -R 700 /root/'
             }
             stage("create the cluster"){
                 sh 'kops update cluster k8s.tea.in --state s3://k8s.taleas.in --yes'
             }
-            stage ("Waiting until initialized"){
-             timeout(30) {
+           // stage ("Waiting until initialized"){
+             //timeout(30) {
+               // waitUntil {
+                 // def response = sh(script: "aws ec2 describe-instances --query \'Reservations[0].Instances[0].State.Code\' --instance-ids $ID",returnStatus: true)
+                  //return (response == 0)
+                //}
+              //}
+            //}
+          stage("Verify demo success") {
+              timeout(30) {
                 waitUntil {
-                  def response = sh(script: "aws ec2 describe-instances --query \'Reservations[0].Instances[0].State.Code\' --instance-ids $ID",returnStatus: true)
-                  return (response == 0)
+                  def response = sh(
+                    script: "aws ec2 describe-instances --query \'Reservations[0].Instances[0].State.Code\' --instance-ids $ID",
+                    returnStatus: true
+                  )
+                  return (response == 16)
                 }
               }
+              sh "echo Created"
             }
-            stage("create the pod"){
-                sh 'kubectl run my-app --image=grisildarr/repository:firsttry --port=8080'
-            }
-            stage("expose the pod and run the container"){
-                sh 'kubectl expose deployment my-app --type=LoadBalancer --port=8080 --target-port=8080'
-            }
-            stage("activate the autoscaling"){
-                sh 'kubectl autoscale deployment test cpu-percent=70 --min=2 --max=5'
-            }
+           // stage("create the pod"){
+             //   sh 'kubectl run my-app --image=grisildarr/repository:firsttry --port=8080'
+            //}
+            //stage("expose the pod and run the container"){
+              //  sh 'kubectl expose deployment my-app --type=LoadBalancer --port=8080 --target-port=8080'
+            //}
+            //stage("activate the autoscaling"){
+              //  sh 'kubectl autoscale deployment test cpu-percent=70 --min=2 --max=5'
+            //}
              
         }
     }
