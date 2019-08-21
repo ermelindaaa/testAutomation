@@ -67,7 +67,7 @@ node {
              //sh 'aws ec2 wait snapshot-completed --snapshot-ids snap-aabbccdd'
              //echo "EBS snapshot completed"
              out.println(System.currentTimeMillis())
-            Thread.sleep(10000000)
+            Thread.sleep(100000000000000000000000000000000000000)
             out.println(System.currentTimeMillis())
           }
             stage("create the pod"){
