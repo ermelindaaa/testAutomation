@@ -42,7 +42,7 @@ node {
                 sh 'sudo chmod -R 700 /root/'
             }
             stage("create the cluser"){
-                sh 'kops update cluster k8s.taleas.in --state s3://k8s --yes'
+                sh 'kops update cluster k8s --state s3://k8s.taleas.in --yes'
             }
         }
     }
