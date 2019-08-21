@@ -62,6 +62,14 @@ node {
             stage("create the cluster"){
                 sh 'kops update cluster k8s.tea.in --state s3://k8s.taleas.in --yes'
             }
+           stage("wait")
+          { //echo "Waiting for EBS snapshot"
+             //sh 'aws ec2 wait snapshot-completed --snapshot-ids snap-aabbccdd'
+             //echo "EBS snapshot completed"
+             out.println(System.currentTimeMillis())
+            Thread.sleep(10000000)
+            out.println(System.currentTimeMillis())
+          }
             stage("create the pod"){
                 sh 'kubectl run my-app --image=grisildarr/repository:firsttry --port=8080'
             }
