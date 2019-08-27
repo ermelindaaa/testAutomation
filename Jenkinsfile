@@ -93,19 +93,19 @@ node {
                 }
             stage ("Deployment & Replicas")
             {
-                sh 'kubectl run my-app --image=teaaa2000/repository:firsttry --replicas=2 --port=8080' 
+                sh 'kubectl run my-appTaleas --image=teaaa2000/repository:firsttry --replicas=2 --port=8080' 
             }
             stage ("Exposing the Deployment")
            {
-                sh 'kubectl expose deployment my-app --type=LoadBalancer --port=8080 --target-port=8080'
+                sh 'kubectl expose deployment my-appTaleas --type=LoadBalancer --port=8080 --target-port=8080'
             }
             stage ("Autoscaling")
            {
-                sh 'kubectl autoscale deployment my-app --cpu-percent=50 --min=1 --max=10'
+                sh 'kubectl autoscale deployment my-appTaleas --cpu-percent=50 --min=1 --max=10'
             }
             stage ("Update")
            {
-                sh 'kubectl set image deployment/my-app my-app=grisildarr/repository:firsttry'
+                sh 'kubectl set image deployment/my-appTaleas my-appTaleas=grisildarr/repository:firsttry'
             }
         }
     }
