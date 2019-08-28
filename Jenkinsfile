@@ -10,13 +10,13 @@ node {
         [[
             $class: 'AmazonWebServicesCredentialsBinding',
             accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-            credentialsId: '6455cc95-41a7-4565-ba45-744240ae69ee',  // ID of credentials in Jenkins
+            credentialsId: '39c07877-ebc4-4f70-a4ca-084feda446e1',  // ID of credentials in Jenkins
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         ]]) 
     {
         stage("create EC2 instance")
         {
-            ID = sh (script: 'aws ec2 run-instances --image-id ami-0085d4f8878cddc81 --count 1 --instance-type t2.micro --key-name kub --security-group-ids sg-88d34feb --subnet-id subnet-166e626b --region eu-central-1 --query \'Instances[0].InstanceId\'',returnStdout: true)
+            ID = sh (script: 'aws ec2 run-instances --image-id ami-0085d4f8878cddc81 --count 1 --instance-type t2.micro --key-name Taleas456 --security-group-ids sg-88d34feb --subnet-id subnet-166e626b --region eu-central-1 --query \'Instances[0].InstanceId\'',returnStdout: true)
         }
         stage("get the EC2 external ip")
         {
@@ -26,7 +26,7 @@ node {
 
 
     
-   withCredentials([sshUserPrivateKey(credentialsId: 'e78b2bb8-fe91-415d-8330-08af25ee398c', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) 
+   withCredentials([sshUserPrivateKey(credentialsId: '01eb9d49-682c-4e68-94a6-ec77889de9aa', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) 
     {
       remote.user = userName
       remote.identityFile = identity
@@ -51,7 +51,7 @@ node {
         [[
             $class: 'AmazonWebServicesCredentialsBinding',
             accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-            credentialsId:  '6455cc95-41a7-4565-ba45-744240ae69ee',  
+            credentialsId:  '39c07877-ebc4-4f70-a4ca-084feda446e1',  
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
         ]]) 
         {
