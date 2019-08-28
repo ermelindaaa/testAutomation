@@ -101,11 +101,11 @@ node {
             }
             stage ("Autoscaling")
            {
-                sh 'kubectl autoscale deployment my-appnew --cpu-percent=50 --min=1 --max=10'
+                sh 'kubectl autoscale deployment my-appnew --cpu-percent=50 --min=1 --max=5'
             }
             stage ("Update")
            {
-                sh 'kubectl set image deployment/my-appnew my-appnew=grisildarr/repository:firsttry'
+               // sh 'kubectl set image deployment/my-appnew my-appnew=grisildarr/repository:firsttry'
             }
         }
     }
