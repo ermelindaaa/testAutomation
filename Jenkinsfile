@@ -5,7 +5,6 @@ def IP
 remote.allowAnyHosts = true
 node {
     
-    
   withCredentials(
         [[
             $class: 'AmazonWebServicesCredentialsBinding',
@@ -106,6 +105,10 @@ node {
             stage ("Update")
            {
                // sh 'kubectl set image deployment/my-appnew my-appnew=grisildarr/repository:firsttry'
+            }
+             stage("Slack message")
+            {
+                slackSend message:"build finished "
             }
         }
     }
